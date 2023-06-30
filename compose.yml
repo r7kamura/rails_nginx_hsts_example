@@ -1,0 +1,28 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - public:/workspace/public
+      - tmp:/workspace/tmp
+    ports:
+      - "80:80"
+    depends_on:
+      - rails
+  rails:
+    build:
+      context: .
+      dockerfile: ./docker/rails/Dockerfile
+    volumes:
+      - .:/workspace
+      - public:/workspace/public
+      - tmp:/workspace/tmp
+      - bundle:/usr/local/bundle
+    command: bin/rails server --pid=/dev/null
+
+volumes:
+  bundle:
+  public:
+  tmp:
