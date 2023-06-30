@@ -1,9 +1,15 @@
 require "active_support/core_ext/integer/time"
+require "strict_transport_security_remover"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.force_ssl = true
+
+  config.middleware.insert_before(
+    ActionDispatch::SSL,
+    StrictTransportSecurityRemover
+  )
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
